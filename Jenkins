@@ -1,9 +1,13 @@
 node{
     stage('SCM checkout'){
-      git 'https://github.com/MouniReddy784/MavenBuild.git'
+      checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubCreds', url: 'https://github.com/MouniReddy784/MavenBuild.git']]]
       }
-      stage('compile-package'){
-          sh 'mvn package'
+      stage('build automation'){
+          sh """
+              mvn clean install
+              ls -lrta
+              ls -lrta target
+            """
        }
        
        }
