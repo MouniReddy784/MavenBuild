@@ -1,8 +1,10 @@
 node{
-    stage('SCM checkout'){
+    
+    stage('Code Checkout'){
       checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubCreds', url: 'https://github.com/MouniReddy784/MavenBuild.git']]]
       }
-      stage('build automation'){
+      
+      stage('Build Automation'){
           sh """
               mvn clean install
               ls -lrta
@@ -10,4 +12,8 @@ node{
             """
        }
        
+       stage('Archeive Artifacts'){
+       archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
        }
+        
+        }
